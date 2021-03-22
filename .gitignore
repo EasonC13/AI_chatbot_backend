@@ -1,0 +1,4 @@
+.env
+.ipynb*
+__pycache__
+config.py
