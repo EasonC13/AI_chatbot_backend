@@ -2,3 +2,9 @@
 .ipynb*
 __pycache__
 config.py
+
+
+front-end
+
+!tmp
+tmp/*
