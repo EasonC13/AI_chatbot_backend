@@ -2,9 +2,8 @@
 .ipynb*
 __pycache__
 config.py
-
+.vscode
 
 front-end
 
-!tmp
-tmp/*
+tmp
