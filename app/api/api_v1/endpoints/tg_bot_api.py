@@ -35,7 +35,7 @@ async def addNewBot(data: add_bot_format):
         "Custom_Response": [], # S.M.A.R.T
         "is_public": data.is_public,
         "usage_count": 0,
-        "is_reciever": False,
+        "is_receiver": False,
         "response_bots": [],
         "last_update": datetime.now(),
         "create_time": datetime.now(),
@@ -74,7 +74,7 @@ async def api_get_bot_data_by_token(data: post_token_format):
 async def get_avaliable_bots(user_email):
     db = await get_database()
     col = db["AI_Chatbot_Platform"]["bots"]
-    find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}], "is_reciever": False},
+    find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}], "is_receiver": False},
                        {"_id": False,
                         "display_name": True,
                         "tg_username":True,
@@ -129,24 +129,83 @@ async def receiver_set(data: receiver_set_format):
     col = db["AI_Chatbot_Platform"]["bots"]
     
     target = await col.find_one({"tg_username": data.target_bot_username})
-    if target["is_public"]:
-        message = "fail, is_public = True, only able to use private bot as reciever."
-    if target["Creator"] != data.user_email:
+    if target == None:
+        message = "Bot Not Found."
+    elif target["Creator"] != data.user_email:
         message = "fail, you can't change other's bot."
+    elif target["is_public"]:
+        message = "fail, is_public = True, only able to use private bot as receiver."
     else:
         bots_token = []
         for username in data.response_bots_username:
             bot = await col.find_one({"tg_username": username})
             bots_token.append(bot["Token"])
 
-        if len(bots_token) > 4:
-            bots_token = bots_token[0:4]
-
-        result = await col.update_one({"tg_username": data.target_bot_username, "Creator": data.user_email}, {"$set": {"response_bots": bots_token}})
+        result = await col.update_one({"tg_username": data.target_bot_username, "Creator": data.user_email}, {"$set": {"response_bots": bots_token, "is_receiver": True}})
 
         if result.modified_count:
+            #Webhook target["Token"]
             message = "success"
         else:
             message = "fail, no modified. unknown error when update. (might be same)"
         
+    return {"message": message}
+
+class receiver_remove_format(BaseModel):
+    user_email: str = "example@gmail.com"
+    target_bot_username: str = "@Example_bot"
+
+@router.post("/remove/receiver")
+async def receiver_set(data: receiver_remove_format):
+    """Example:
+    {
+  "user_email": "pricean01@gmail.com",
+  "target_bot_username": "@NTNU_Demo_bot"
+}"""
+    
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    
+    target = await col.find_one({"tg_username": data.target_bot_username})
+    if target == None:
+        message = "Bot Not Found."
+    elif target["Creator"] != data.user_email:
+        message = "fail, you can't change other's bot."
+    elif target["is_public"]:
+        message = "fail, is_public = True, only able to use private bot as receiver."
+    elif target["is_receiver"]:
+        message = "fail, you can't change while it's receiver. Remove receiver first."
+    else:
+        result = await col.update_one({"tg_username": data.target_bot_username, "Creator": data.user_email},
+         {"$set": {"response_bots": [], "is_receiever": False}})
+        if result.modified_count:
+            #Webhook Remove target["Token"]
+            message = "success"
+        else:
+            message = "fail, no modified. unknown error when update. (might be same)"
+    return {"message": message}
+
+
+class bot_change_public_format(BaseModel):
+    user_email: str = "example@gmail.com"
+    target_bot_username: str = "@Example_bot"
+    is_public: bool = True
+
+@router.post("/bot/change_public")
+async def receiver_set(data: bot_change_public_format):
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    
+    target = await col.find_one({"tg_username": data.target_bot_username})
+    if target == None:
+        message = "Bot Not Found."
+    elif target["Creator"] != data.user_email:
+        message = "fail, you can't change other's bot."
+    else:
+        result = await col.update_one({"tg_username": data.target_bot_username, "Creator": data.user_email},
+         {"$set": {"is_public": data.is_public}})
+        if result.modified_count:
+            message = "success"
+        else:
+            message = "fail, no modified. unknown error when update. (might be same)"
     return {"message": message}
