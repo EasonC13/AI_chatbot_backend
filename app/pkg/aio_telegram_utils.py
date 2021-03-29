@@ -5,7 +5,8 @@ import os
 import base64
 from asyncio import run as aio_run
 
-client = TelegramClient('./tmp/aio_telegram_utils', TELEGRAM_API_ID, TELEGRAM_API_HASH)
+random_id = str(uuid.uuid4())
+client = TelegramClient(f'./tmp/aio_telegram_utils_{random_id}', TELEGRAM_API_ID, TELEGRAM_API_HASH)
 
 #aio_run(client.start(bot_token=Operator_bot_Token))
 
@@ -15,13 +16,19 @@ async def connect_handler():
         await client.start(bot_token=Operator_bot_Token)
         
 
-async def get_profile_img_b64(username):
+async def aio_get_profile_img_b64(username):
+    #Fail by unknown error
+    #也許是放在子模組時會有的問題
+    #多線程也會出現錯誤
     await connect_handler()
     filename = str(uuid.uuid4())
     filepath = f"./tmp/{filename}.png"
     result = await client.download_profile_photo(username, filepath)
-    png_encoded = base64.b64encode(open(filepath, "rb").read())
-    os.remove(filepath)
-    return png_encoded
+    if result:
+        png_encoded = base64.b64encode(open(filepath, "rb").read())
+        os.remove(filepath)
+        return png_encoded
+    else:
+        return None
 
 
