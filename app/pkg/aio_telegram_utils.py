@@ -17,9 +17,6 @@ async def connect_handler():
         
 
 async def aio_get_profile_img_b64(username):
-    #Fail by unknown error
-    #也許是放在子模組時會有的問題
-    #多線程也會出現錯誤
     await connect_handler()
     filename = str(uuid.uuid4())
     filepath = f"./tmp/{filename}.png"
