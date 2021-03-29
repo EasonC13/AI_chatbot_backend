@@ -62,9 +62,26 @@ class post_token_format(BaseModel):
     bot_token: str = "1234567890:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 
-@router.post("/get/bot_data/")
+@router.post("/get_bot_data_by_token/")
 async def api_get_bot_data_by_token(data: post_token_format):
     """Important data use post to transfer"""
     bot_data = get_bot_data_by_token(data.bot_token)
     bot_data["profile_pic"] = await aio_get_profile_img_b64("@"+bot_data["username"])
     return bot_data
+
+@router.get("/get/avaliable_bots")
+async def get_avaliable_bots(user_email):
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}], "is_reciever": False},
+                       {"_id": False,
+                        "tg_username":True,
+                        "Custom_Response": True,
+                        "usage_count": True,
+                        "create_time": True,
+                        "last_update": True,
+                        "profile_pic": True
+                        })
+    #先這樣 workaround，未來多頁面時要再改
+    result = await find_result.to_list(200)
+    return result
