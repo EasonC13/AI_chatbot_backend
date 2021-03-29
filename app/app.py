@@ -3,7 +3,7 @@
 # %%
 from fastapi import FastAPI
 from starlette.exceptions import HTTPException
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 #from .api.api_v1.api import router as api_router
@@ -52,14 +52,6 @@ app.include_router(api_v1_router, prefix=API_V1_STR)
 
 
 # %%
-
-
-
-# %%
-
-
-
-# %%
 from fastapi.responses import HTMLResponse
 @app.get("/")
 def home():
@@ -89,6 +81,10 @@ def fun():
 
 
 # %%
+
+
+
+# %%
 static_file_path = "../front-end/dist"
 from fastapi.staticfiles import StaticFiles
 app.mount("/", StaticFiles(directory=static_file_path), name="static")
@@ -100,25 +96,3 @@ if __name__ == "__main__":
     nest_asyncio.apply()
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=API_PORT)
-
-# %% [markdown]
-# @app.post("/request_phone_code", tags=["user"])
-# def request_phone_code():
-#     pass
-# 
-# @app.post("/help_add_bot", tags=["user"])
-# def request_phone_code():
-#     pass
-# %% [markdown]
-# @app.get("/")
-# def index_page():
-#     pass
-
-# %%
-
-
-
-# %%
-print("讚美主")
-
-
