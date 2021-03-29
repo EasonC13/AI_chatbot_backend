@@ -15,15 +15,6 @@ import asyncio
 
 
 # %%
-from pkg.aio_telegram_utils import get_profile_img_b64
-from pkg.telegram_utils import get_bot_data_by_token
-
-
-# %%
-
-
-
-# %%
 app = FastAPI(title=PROJECT_NAME)
 
 if not ALLOWED_HOSTS:
@@ -57,6 +48,18 @@ app.include_router(api_v1_router, prefix=API_V1_STR)
 
 
 # %%
+
+
+
+# %%
+
+
+
+# %%
+
+
+
+# %%
 from fastapi.responses import HTMLResponse
 @app.get("/")
 def home():
@@ -75,49 +78,6 @@ def fun():
 
 # %%
 
-
-# %% [markdown]
-# from telegram import Bot
-# from telegram.error import InvalidToken
-# def get_bot_data_by_token(Token):
-#     try:  
-#         bot = Bot(Token)
-#         result = bot.get_me()
-#         return result.to_dict()
-#     except InvalidToken:
-#         return None
-
-# %%
-from datetime import datetime
-async def addNewBot(creator, bot_token):
-    bot_data = get_bot_data_by_token(bot_token)
-    if bot_data == None:
-        message = "Fail, Bot Not Found"
-    else:
-        data = {
-        "Token": bot_token,
-        "tg_username": f"@{bot_data['username']}",
-        "Creator": creator,
-        "Custom_Response": [], # S.M.A.R.T
-        "is_public": False,
-        "usage_count": 0,
-        "is_reciever": True,
-        "response_bots": [],
-        "last_update": datetime.now(),
-        "create_time": datetime.now(),
-        "report_list": [],
-        }
-        db = await get_database()
-        col = db["AI_Chatbot_Platform"]["bots"]
-
-        #確認是不是已經有了
-        already_have = await col.find_one({"Token": bot_token})
-        if already_have:
-            message = f"Fail, already have create by {already_have['Creator']} at {already_have['create_time']}"
-        else:
-            await col.insert_one(data)
-            message = "Success, Add Success."
-        return {"message": message}
 
 
 # %%
@@ -159,6 +119,6 @@ if __name__ == "__main__":
 
 
 # %%
-
+print("讚美主")
 
 

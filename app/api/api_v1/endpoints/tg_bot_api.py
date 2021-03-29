@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter
 router = APIRouter()
-from pkg.aio_telegram_utils import get_profile_img_b64
+from pkg.aio_telegram_utils import aio_get_profile_img_b64
 from pkg.telegram_utils import get_bot_data_by_token
 from db.mongodb import get_database
 
@@ -50,3 +50,19 @@ async def addNewBot(data: add_bot_format):
             await col.insert_one(out_data)
             message = "Success, Add Success."
     return {"message": message}
+
+##
+
+from pkg.aio_telegram_utils import aio_get_profile_img_b64
+from pkg.telegram_utils import get_bot_data_by_token
+
+class post_token_format(BaseModel):
+    bot_token: str = "1234567890:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+
+@router.post("/get/bot_data/")
+async def api_get_bot_data_by_token(data: post_token_format):
+    """Important data use post to transfer"""
+    bot_data = get_bot_data_by_token(data.bot_token)
+    bot_data["profile_pic"] = await aio_get_profile_img_b64("@"+bot_data["username"])
+    return bot_data
