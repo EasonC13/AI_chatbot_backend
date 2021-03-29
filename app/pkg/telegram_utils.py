@@ -11,3 +11,10 @@ def get_bot_data_by_token(Token):
     except (InvalidToken, Unauthorized) as e:
         return None
 
+def get_full_name_by_data(bot_data):
+    name = ""
+    try:
+        name += bot_data["first_name"]
+    except:
+        pass
+    return name

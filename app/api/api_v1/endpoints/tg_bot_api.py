@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 router = APIRouter()
 from pkg.aio_telegram_utils import aio_get_profile_img_b64
-from pkg.telegram_utils import get_bot_data_by_token
+from pkg.telegram_utils import get_bot_data_by_token, get_full_name_by_data
 from db.mongodb import get_database
 from core.config import DATABASE_NAME, COLLECTION_Bots
 
@@ -29,6 +29,7 @@ async def addNewBot(data: add_bot_format):
     else:
         out_data = {
         "Token": data.bot_token,
+        "display_name": get_full_name_by_data(bot_data),
         "tg_username": f"@{bot_data['username']}",
         "Creator": data.creator,
         "Custom_Response": [], # S.M.A.R.T
@@ -75,6 +76,7 @@ async def get_avaliable_bots(user_email):
     col = db["AI_Chatbot_Platform"]["bots"]
     find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}], "is_reciever": False},
                        {"_id": False,
+                        "display_name": True,
                         "tg_username":True,
                         "Custom_Response": True,
                         "usage_count": True,
@@ -92,6 +94,7 @@ async def get_avaliable_bots(user_email):
     col = db["AI_Chatbot_Platform"]["bots"]
     find_result = col.find({"Creator": user_email},
                        {"_id": False,
+                        "display_name": True,
                         "tg_username":True,
                         "Custom_Response": True,
                         "is_public": True,
@@ -104,3 +107,46 @@ async def get_avaliable_bots(user_email):
     #先這樣 workaround，未來多頁面時要再改
     result = await find_result.to_list(200)
     return result
+
+##
+
+
+class receiver_set_format(BaseModel):
+    user_email: str = "example@gmail.com"
+    target_bot_username: str = "@Example_bot"
+    response_bots_username: list = []
+        
+@router.post("/set/receiver")
+async def receiver_set(data: receiver_set_format):
+    """Example:
+    {
+  "user_email": "pricean01@gmail.com",
+  "target_bot_username": "@NTNU_Demo_bot",
+  "response_bots_username": ["@NTNU_2_bot","@NTNU_3_bot","@NTNU_4_bot","@NTNU_test_bot","@NTNU_Demo_bot"]
+}"""
+    
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    
+    target = await col.find_one({"tg_username": data.target_bot_username})
+    if target["is_public"]:
+        message = "fail, is_public = True, only able to use private bot as reciever."
+    if target["Creator"] != data.user_email:
+        message = "fail, you can't change other's bot."
+    else:
+        bots_token = []
+        for username in data.response_bots_username:
+            bot = await col.find_one({"tg_username": username})
+            bots_token.append(bot["Token"])
+
+        if len(bots_token) > 4:
+            bots_token = bots_token[0:4]
+
+        result = await col.update_one({"tg_username": data.target_bot_username, "Creator": data.user_email}, {"$set": {"response_bots": bots_token}})
+
+        if result.modified_count:
+            message = "success"
+        else:
+            message = "fail, no modified. unknown error when update. (might be same)"
+        
+    return {"message": message}
