@@ -39,6 +39,7 @@ async def addNewBot(data: add_bot_format):
         "last_update": datetime.now(),
         "create_time": datetime.now(),
         "report_list": [],
+        "profile_pic": await aio_get_profile_img_b64(f"@{bot_data['username']}")
         }
         db = await get_database()
         col = db["AI_Chatbot_Platform"]["bots"]
