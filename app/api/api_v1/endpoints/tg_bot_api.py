@@ -85,3 +85,22 @@ async def get_avaliable_bots(user_email):
     #先這樣 workaround，未來多頁面時要再改
     result = await find_result.to_list(200)
     return result
+
+@router.get("/get/my_bots")
+async def get_avaliable_bots(user_email):
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    find_result = col.find({"Creator": user_email},
+                       {"_id": False,
+                        "tg_username":True,
+                        "Custom_Response": True,
+                        "is_public": True,
+                        "usage_count": True,
+                        "create_time": True,
+                        "last_update": True,
+                        "profile_pic": True,
+                        "report_list": True,
+                        })
+    #先這樣 workaround，未來多頁面時要再改
+    result = await find_result.to_list(200)
+    return result
