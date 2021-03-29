@@ -4,7 +4,7 @@ router = APIRouter()
 from pkg.aio_telegram_utils import aio_get_profile_img_b64
 from pkg.telegram_utils import get_bot_data_by_token
 from db.mongodb import get_database
-
+from core.config import DATABASE_NAME, COLLECTION_Bots
 
 @router.get("/test")
 async def test():
@@ -42,7 +42,7 @@ async def addNewBot(data: add_bot_format):
         "profile_pic": await aio_get_profile_img_b64(f"@{bot_data['username']}")
         }
         db = await get_database()
-        col = db["AI_Chatbot_Platform"]["bots"]
+        col = db[DATABASE_NAME][COLLECTION_Bots]
 
         #確認是不是已經有了
         already_have = await col.find_one({"Token": data.bot_token})
