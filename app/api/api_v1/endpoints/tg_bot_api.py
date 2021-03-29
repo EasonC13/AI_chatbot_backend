@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 class add_bot_format(BaseModel):
     creator: str = "example@gmail.com"
     bot_token: str = "1234567890:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    is_public: bool = False
 
 from datetime import datetime
 
@@ -31,9 +32,9 @@ async def addNewBot(data: add_bot_format):
         "tg_username": f"@{bot_data['username']}",
         "Creator": data.creator,
         "Custom_Response": [], # S.M.A.R.T
-        "is_public": False,
+        "is_public": data.is_public,
         "usage_count": 0,
-        "is_reciever": True,
+        "is_reciever": False,
         "response_bots": [],
         "last_update": datetime.now(),
         "create_time": datetime.now(),
