@@ -67,8 +67,12 @@ class post_token_format(BaseModel):
 async def api_get_bot_data_by_token(data: post_token_format):
     """Important data use post to transfer"""
     bot_data = get_bot_data_by_token(data.bot_token)
-    bot_data["profile_pic"] = await aio_get_profile_img_b64("@"+bot_data["username"])
-    return bot_data
+    if bot_data:
+        bot_data["profile_pic"] = await aio_get_profile_img_b64("@"+bot_data["username"])
+        message = "success"
+    else:
+        message = "fail, invalid token"
+    return {"message": message, "data": bot_data}
 
 @router.get("/get/myChats")
 async def get_my_chats(user_email):
