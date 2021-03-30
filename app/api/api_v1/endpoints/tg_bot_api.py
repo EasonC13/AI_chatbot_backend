@@ -70,6 +70,52 @@ async def api_get_bot_data_by_token(data: post_token_format):
     bot_data["profile_pic"] = await aio_get_profile_img_b64("@"+bot_data["username"])
     return bot_data
 
+@router.get("/get/myChats")
+async def get_my_chats(user_email):
+    db = await get_database()
+    col = db["AI_Chatbot_Platform"]["bots"]
+    receiver_bot = await col.find_one({"Creator": user_email, "is_receiver": True},
+                       {"_id": False,
+                        "display_name": True,
+                        "tg_username":True,
+                        "Custom_Response": True,
+                        "usage_count": True,
+                        "create_time": True,
+                        "last_update": True,
+                        "profile_pic": True,
+                        "response_bots": True
+                        })
+    if receiver_bot:
+        filter = []
+        for token in receiver_bot["response_bots"]:
+            filter.append({"Token": token})
+
+        find_result = col.find({"$or":filter},
+                        {"_id": False,
+                            "display_name": True,
+                            "tg_username":True,
+                            "Custom_Response": True,
+                            "usage_count": True,
+                            "create_time": True,
+                            "last_update": True,
+                            "profile_pic": True
+                            })
+        #先這樣 workaround，未來多頁面時要再改
+        other_bots = await find_result.to_list(200)
+        del receiver_bot["response_bots"]
+        message = "success"
+    else:
+        other_bots = []
+        message = "fail, not found a receiver bot."
+    
+    #先這樣 workaround，未來多個機器人時要再改
+    return {"message": message, "receivers": [
+        {
+            "receiver_bot": receiver_bot,
+            "other_bots": other_bots
+    }]}
+
+
 @router.get("/get/avaliable_bots")
 async def get_avaliable_bots(user_email):
     db = await get_database()
@@ -89,7 +135,7 @@ async def get_avaliable_bots(user_email):
     return result
 
 @router.get("/get/my_bots")
-async def get_avaliable_bots(user_email):
+async def get_my_bots(user_email):
     db = await get_database()
     col = db["AI_Chatbot_Platform"]["bots"]
     find_result = col.find({"Creator": user_email},
@@ -156,7 +202,7 @@ class receiver_remove_format(BaseModel):
     target_bot_username: str = "@Example_bot"
 
 @router.post("/remove/receiver")
-async def receiver_set(data: receiver_remove_format):
+async def receiver_remove(data: receiver_remove_format):
     """Example:
     {
   "user_email": "pricean01@gmail.com",
@@ -192,7 +238,7 @@ class bot_change_public_format(BaseModel):
     is_public: bool = True
 
 @router.post("/bot/change_public")
-async def receiver_set(data: bot_change_public_format):
+async def bot_change_public(data: bot_change_public_format):
     db = await get_database()
     col = db["AI_Chatbot_Platform"]["bots"]
     
