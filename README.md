@@ -36,6 +36,7 @@ Please [clone front end from another GitHub Repo](https://github.com/EasonC13/AI
 ```
 cd AI_chatbot_platform
 git clone https://github.com/EasonC13/AI_Chatbot_website.git
+mv AI_Chatbot_website front-end
 ```
 
 And then go inside it and build it. (Recommand Demo Branch since we havn't merge it.)
