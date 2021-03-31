@@ -40,7 +40,9 @@ app.add_exception_handler(HTTP_422_UNPROCESSABLE_ENTITY, http_422_error_handler)
 # %%
 
 from api.api_v1.api import router as api_v1_router
-app.include_router(api_v1_router, prefix=API_V1_STR)
+from api.api_webchat.api import router as api_webchat_router
+#app.include_router(api_v1_router, prefix=API_V1_STR)
+app.include_router(api_webchat_router, prefix="/api/webchat")
 
 
 # %%
@@ -54,6 +56,12 @@ app.include_router(api_v1_router, prefix=API_V1_STR)
 # %%
 from fastapi.responses import HTMLResponse
 @app.get("/")
+def home():
+    with open(f"{static_file_path}/index.html") as f:
+        html = "".join(f.readlines())
+    return HTMLResponse(content=html, status_code= 200)
+
+@app.get("/home")
 def home():
     with open(f"{static_file_path}/index.html") as f:
         html = "".join(f.readlines())
@@ -81,10 +89,6 @@ def fun():
 
 
 # %%
-
-
-
-# %%
 static_file_path = "../front-end/dist"
 from fastapi.staticfiles import StaticFiles
 app.mount("/", StaticFiles(directory=static_file_path), name="static")
@@ -96,3 +100,33 @@ if __name__ == "__main__":
     nest_asyncio.apply()
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=API_PORT)
+
+
+# %%
+
+
+
+# %%
+
+
+# %% [markdown]
+# @app.post("/request_phone_code", tags=["user"])
+# def request_phone_code():
+#     pass
+# 
+# @app.post("/help_add_bot", tags=["user"])
+# def request_phone_code():
+#     pass
+# %% [markdown]
+# @app.get("/")
+# def index_page():
+#     pass
+
+# %%
+
+
+
+# %%
+print("讚美主")
+
+

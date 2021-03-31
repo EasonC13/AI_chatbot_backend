@@ -7,3 +7,4 @@ from .endpoints.webchat_management import router as webchat_manage_api_router
 router = APIRouter()
 
 router.include_router(webchat_api_router)
+router.include_router(webchat_manage_api_router)
