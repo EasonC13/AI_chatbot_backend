@@ -1,7 +1,9 @@
 # AI_chatbot_platform
 
 Backend: https://github.com/EasonC13/AI_chatbot_platform
+
 Front-end: https://github.com/EasonC13/AI_Chatbot_website
+
 (Please Checkout Dev Branch)
 
 Demo Video: https://youtu.be/ES2mmcrhS10
@@ -28,7 +30,7 @@ uvicorn app:app --port {API_PORT} --host 0.0.0.0 --workers 8
 ```
 
 3. Bulid front-end
-If you want use front-end as well.
+If you want use front-end as well. 
 Please [clone front end from another GitHub Repo](https://github.com/EasonC13/AI_Chatbot_website) at root.
 
 ```
