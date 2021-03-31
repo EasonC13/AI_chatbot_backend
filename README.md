@@ -13,7 +13,8 @@ Demo Video: https://youtu.be/ES2mmcrhS10
 0. install dependency:
 
 ```
-pip install -r requirement.txt
+git checkout dev
+pip install -r requirements.txt
 ```
 
 1. copy app/core/config_example.py to app/core/config.py and Edit the config file.
