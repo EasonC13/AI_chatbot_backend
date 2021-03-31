@@ -42,7 +42,7 @@ mv AI_Chatbot_website front-end
 And then go inside it and build it. (Recommand Demo Branch since we havn't merge it.)
 
 ```
-cd AI_Chatbot_website
+cd front-end
 git checkout demo
 npm i
 npm run build
