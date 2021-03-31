@@ -31,14 +31,30 @@ def transform(text):
         text = text.replace(key, replace_map[key])
     return text
 
-@router.get("/generate_response")
-async def generate_response(email, text:str = "How are you doing?", emotion: int = 1, response_count:int = 1):
-    
-    emotion = convert[emotion]
-    translate_result = translate(text, "zh-tw")
+from pydantic import BaseModel, Field
+
+class generate_response_format(BaseModel):
+    email: str = "example@gmail.com"
+    text:str = "How are you doing?"
+    emotion: int = 1
+    response_count:int = 1
+
+@router.post("/generate_response")
+async def generate_response(data: generate_response_format):
+    """{
+    0: "其它",
+    1: "喜歡",
+    2: "悲傷",
+    3: "噁心",
+    4: "憤怒",
+    5: "開心"
+}"""
+    email = data.email
+    emotion = convert[data.emotion]
+    translate_result = translate(data.text, "zh-tw")
 
     inputed_text = f"{translate_result['translatedText']}[{emotion}]"
-    result = await requests.get(f"{CH_GENERATE_API_URL}/?input_text={inputed_text}&nsamples={response_count}")
+    result = await requests.get(f"{CH_GENERATE_API_URL}/?input_text={inputed_text}&nsamples={data.response_count}")
 
     responses = await result.json()
 
