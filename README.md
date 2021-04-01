@@ -23,29 +23,7 @@ cp app/core/config_example.py app/core/config.py
 ```
 
 
-2. Bulid front-end
-
-Please [clone front end from another GitHub Repo](https://github.com/EasonC13/AI_Chatbot_website) at root.
-
-```
-cd AI_chatbot_platform
-git clone https://github.com/EasonC13/AI_Chatbot_website.git
-mv AI_Chatbot_website front-end
-```
-
-And change the google cloud login credentials to your own at `front-end/public/index.html` at line 49.
-
-And then go inside it and build it. (Recommand Demo Branch since we havn't merge it.)
-
-```
-cd front-end
-git checkout demo
-npm i
-npm run build
-```
-
-
-3. Edit the config.py.
+2. Edit the config.py.
 
 (1) You might need to [add Google API Key from this tutorial](https://cloud.google.com/docs/authentication/getting-started).<br>
 And use that key at GOOGLE_APPLICATION_CREDENTIALS in config.py
@@ -98,7 +76,29 @@ curl -X 'GET' \
 
 Coherence is the score of the fluency of the response. If you don’t have a model to judging coherence, just use 0.5 directly.
 
-3. Use the following command to run it:
+3. Bulid front-end
+
+Please [clone front end from another GitHub Repo](https://github.com/EasonC13/AI_Chatbot_website) at root.
+
+```
+cd AI_chatbot_platform
+git clone https://github.com/EasonC13/AI_Chatbot_website.git
+mv AI_Chatbot_website front-end
+```
+
+And change the google cloud login credentials to your own at `front-end/public/index.html` at line 49.
+
+And then go inside it and build it. (Recommand Demo Branch since we havn't merge it.)
+
+```
+cd front-end
+git checkout demo
+npm i
+npm run build
+```
+
+
+4. Use the following command to run it:
 
 ```
 cd app
