@@ -45,14 +45,14 @@ the response format is like the following:
 
 ```
 curl -X 'GET' \
-  'https://{host}/?input_text=Hello World[lovely]&nsamples=5' \
+  'https://{host}/?input_text=你好世界[lovely]&nsamples=5' \
   -H 'accept: application/json'
 ```
 
 ```
 [
   {
-    "candidate": "Reply Text",
+    "candidate": "回覆你喔",
     "coherence": 0.5
   },  
   {
@@ -60,11 +60,11 @@ curl -X 'GET' \
     "coherence": 0.8
   },
   {
-    "candidate": "Greeting!",
+    "candidate": "你好!",
     "coherence": 0.8
   },
   {
-    "candidate": "The world is so small",
+    "candidate": "世界真小",
     "coherence": 0.5
   },
   {
