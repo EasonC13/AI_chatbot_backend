@@ -4,7 +4,7 @@ Backend: https://github.com/EasonC13/AI_chatbot_platform
 
 Front-end: https://github.com/EasonC13/AI_Chatbot_website
 
-(Please Checkout Dev Branch)
+(Please Checkout demo Branch)
 
 Demo Video: https://youtu.be/ES2mmcrhS10
 
