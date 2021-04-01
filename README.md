@@ -10,20 +10,26 @@ Demo Video: https://youtu.be/ES2mmcrhS10
 
 # How To Run?
 
-0. install dependency:
+0. Please Use demo branch for demo
+
+```
+git checkout demo
+```
+
+1. install dependency:
 
 ```
 pip install -r requirements.txt
 ```
 
-1. copy app/core/config_example.py to app/core/config.py and Edit the config file.
+2. copy app/core/config_example.py to app/core/config.py and Edit the config file.
 
 ```
 cp app/core/config_example.py app/core/config.py
 ```
 
 
-2. Edit the config.py.
+3. Edit the config.py.
 
 (1) You might need to [add Google API Key from this tutorial](https://cloud.google.com/docs/authentication/getting-started).<br>
 And use that key at GOOGLE_APPLICATION_CREDENTIALS in config.py
@@ -76,7 +82,7 @@ curl -X 'GET' \
 
 Coherence is the score of the fluency of the response. If you don’t have a model to judging coherence, just use 0.5 directly.
 
-3. Bulid front-end
+4. Install and Bulid front-end
 
 Please [clone front end from another GitHub Repo](https://github.com/EasonC13/AI_Chatbot_website) at root.
 
@@ -86,7 +92,7 @@ git clone https://github.com/EasonC13/AI_Chatbot_website.git
 mv AI_Chatbot_website front-end
 ```
 
-And change the google cloud login credentials to your own at `front-end/public/index.html` at line 49.
+Please change the google cloud login client-id to your own at `front-end/public/index.html` at line 49 follwing [this tutorial](https://developers.google.com/identity/sign-in/web/sign-in).
 
 And then go inside it and build it. (Recommand Demo Branch since we havn't merge it.)
 
@@ -98,7 +104,7 @@ npm run build
 ```
 
 
-4. Use the following command to run it:
+5. Use the following command to run it:
 
 ```
 cd app
