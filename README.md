@@ -4,6 +4,8 @@ Backend: https://github.com/EasonC13/AI_chatbot_platform
 
 Front-end: https://github.com/EasonC13/AI_Chatbot_website
 
+Chinese_Word_Generator_API: https://github.com/EasonC13/Chinese_Word_Generator_API
+
 (Please Checkout demo Branch)
 
 Demo Video: https://youtu.be/ES2mmcrhS10
@@ -40,7 +42,9 @@ And use that key at GOOGLE_APPLICATION_CREDENTIALS in config.py
 
 (3) if you want to have the link to chinese model generate(CH_GENERATE_API_URL), please use `https://chatbot.eason.tw/api/developer/middle-ware/generate-text` for now (demo purpose).
 
-Or host a chinese (zh-tw) language generate API like the following format:
+Or train and host a chinese (zh-tw) language generate model API from [Chinese_Word_Generator_API_example](https://github.com/EasonC13/Chinese_Word_Generator_API)
+
+API should have the following format:
 
 ```
 curl -X 'GET' \
