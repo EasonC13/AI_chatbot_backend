@@ -1,4 +1,4 @@
-# AI_chatbot_platform
+# Accompany AI Chat (AI_chatbot_platform)
 
 Backend: https://github.com/EasonC13/AI_chatbot_platform
 
