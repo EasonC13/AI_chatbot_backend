@@ -6,6 +6,6 @@ config.py
 
 front-end
 
-#!/app/tmp
-#/app/tmp/*
+/app/tmp
+/app/tmp/*
 *.ipynb
