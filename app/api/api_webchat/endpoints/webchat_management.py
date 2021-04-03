@@ -64,4 +64,36 @@ async def add_new_bot(data: add_bot_format):
 
 @router.get("/get/chat-history")
 async def chat_history(user_email:str = "example@gmail.com"):
-    return await get_avaliable_bot(user_email)
+    data = data = [{'display_name': 'Megumin',
+  'picture_url': 'https://i.imgur.com/gyY9jPO.png',
+  'time': '2021-03-31T14:23:32.238000',
+  'chatroom_id': 3,
+  'custom_response': [],
+  'reply': 'What is this?'},
+ {'display_name': 'Katou Megumi',
+  'picture_url': 'https://i.imgur.com/kRpCrSc.jpg',
+  'time': '2021-03-31T16:31:16.530000',
+  'chatroom_id': 3,
+  'custom_response': [],
+  'reply': 'OK.'},
+ {'display_name': 'Aqua',
+  'picture_url': 'https://i.imgur.com/DyUTkDm.png',
+  'time': '2021-03-31T16:35:45.381000',
+  'chatroom_id': 3,
+  'custom_response': [],
+  'reply': 'Hello World'},
+ {'display_name': 'Karuizawa Kei',
+  'picture_url': 'https://i.imgur.com/csDadNA.jpg',
+  'time': '2021-03-31T16:36:36.963000',
+  'chatroom_id': 3,
+  'custom_response': [],
+  'reply': 'That was awesome!'},
+ {'display_name': 'Reiner',
+  'picture_url': 'https://i.imgur.com/ub1Dik7.png',
+  'time': '2021-03-31T16:39:25.018000',
+  'chatroom_id': 3,
+  'custom_response': [],
+  'reply': 'It work~'},
+       ]
+    return data
+    #return await get_avaliable_bot(user_email)

@@ -43,7 +43,7 @@ from api.api_v1.api import router as api_v1_router
 from api.api_webchat.api import router as api_webchat_router
 from api.api_developer.api import router as api_developer_router
 
-app.include_router(api_v1_router, prefix=API_V1_STR, tags=["telegram"])
+#app.include_router(api_v1_router, prefix=API_V1_STR, tags=["telegram"])
 app.include_router(api_webchat_router, prefix="/api/webchat", tags=["webchat"])
 app.include_router(api_developer_router, prefix="/api/developer", tags=["developer"])
 
