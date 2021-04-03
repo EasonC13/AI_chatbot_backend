@@ -124,7 +124,7 @@ async def get_my_chats(user_email):
 async def get_avaliable_bots(user_email):
     db = await get_database()
     col = db["AI_Chatbot_Platform"]["bots"]
-    find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}], "is_receiver": False},
+    find_result = col.find({"$or":[{"is_public": True}, {"creator": user_email}], "is_receiver": False},
                        {"_id": False,
                         "display_name": True,
                         "tg_username":True,
