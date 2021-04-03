@@ -109,8 +109,13 @@ npm i
 npm run build
 ```
 
+### 5. Create tmp folder at app/
 
-### 5. Use the following command to run it:
+```
+mkdir app/tmp
+```
+
+### 6. Use the following command to run it:
 
 ```
 cd app
