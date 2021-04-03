@@ -8,7 +8,7 @@ Chinese_Word_Generator_API: https://github.com/EasonC13/Chinese_Word_Generator_A
 
 (Please Checkout demo Branch)
 
-Demo Video: https://youtu.be/Q51rIB4sbDU
+Demo Video: https://youtu.be/-Bq76zVv7GI
 
 ## How To Run?
 
