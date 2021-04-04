@@ -40,8 +40,8 @@ class generate_response_format(BaseModel):
     text:str = "How are you doing?"
     emotion: int = 1
     response_count:int = 1
-    emoji: bool = "true"
-    punct: bool = "true" # replace punct with space
+    emoji: bool = True
+    punct: bool = True # replace punct with space
 
 def deEmojify(text):
     regrex_pattern = re.compile(pattern = "["
