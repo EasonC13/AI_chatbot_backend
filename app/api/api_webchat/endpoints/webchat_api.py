@@ -53,6 +53,10 @@ async def generate_response(data: generate_response_format):
     emotion = convert[data.emotion]
     translate_result = translate(data.text, "zh-tw")
 
+    #暫時避開簡體支援，因為容易跟 tw 搞混
+    if translate_result["detectedSourceLanguage"] == "zh-CN":
+        translate_result["detectedSourceLanguage"] = "zh-tw"
+
     inputed_text = f"{translate_result['translatedText']}[{emotion}]"
     result = await requests.get(f"{CH_GENERATE_API_URL}/?input_text={inputed_text}&nsamples={data.response_count}")
 
