@@ -28,6 +28,7 @@ class generate_response_format(BaseModel):
     punct: Optional[bool] = True
     # "": send back "..."(default, no further change), "random": "random new topic"
     default_response: Optional[str] = ""
+    zh: Optional[str] = "zh-tw"
 
     
     
@@ -65,8 +66,8 @@ async def generate_response(data: generate_response_format):
     translate_result = translate(data.text, "zh-tw")
 
     #暫時避開簡體支援，因為容易跟 tw 搞混
-    if translate_result["detectedSourceLanguage"] == "zh-CN":
-        translate_result["detectedSourceLanguage"] = "zh-tw"
+    if "zh-" in translate_result["detectedSourceLanguage"]:
+        translate_result["detectedSourceLanguage"] = data.zh
 
     inputed_text = f"{translate_result['translatedText']}[{emotion}]"
     result = await requests.get(f"{CH_GENERATE_API_URL}/?input_text={inputed_text}&nsamples={data.response_count}")
