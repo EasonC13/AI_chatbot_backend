@@ -1,12 +1,14 @@
 # Accompany AI Chat (AI_chatbot_platform)
 
+## For Solution Challenge Demo, Please Checkout demo Branch
+
 Backend: https://github.com/EasonC13/AI_chatbot_platform
 
 Front-end: https://github.com/EasonC13/AI_Chatbot_website
 
 Chinese_Word_Generator_API: https://github.com/EasonC13/Chinese_Word_Generator_API
 
-(Please Checkout demo Branch)
+
 
 Demo Video: https://youtu.be/-Bq76zVv7GI
 
