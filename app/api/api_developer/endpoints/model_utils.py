@@ -29,6 +29,7 @@ class generate_response_format(BaseModel):
     # "": send back "..."(default, no further change), "random": "random new topic"
     default_response: Optional[str] = ""
     zh: Optional[str] = "zh-tw"
+    response_language: Optional[str] = ""
 
     
     
@@ -48,7 +49,7 @@ def deEmojify(responses):
 def remove_punct(responses):
     out = []
     for text in responses:
-        out.append(re.sub(r'[^\w\s]', ' ', out_responses))
+        out.append(re.sub(r'[^\w\s]', ' ', text))
     return out
 
 @router.post("/generate_response")
@@ -66,7 +67,9 @@ async def generate_response(data: generate_response_format):
     translate_result = translate(data.text, "zh-tw")
 
     #暫時避開簡體支援，因為容易跟 tw 搞混
-    if "zh-" in translate_result["detectedSourceLanguage"]:
+    if data.response_language != "":
+        translate_result["detectedSourceLanguage"] = data.response_language
+    elif "zh-" in translate_result["detectedSourceLanguage"]:
         translate_result["detectedSourceLanguage"] = data.zh
 
     inputed_text = f"{translate_result['translatedText']}[{emotion}]"
