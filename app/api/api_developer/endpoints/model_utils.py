@@ -62,6 +62,7 @@ async def generate_response(data: generate_response_format):
     4: "憤怒",
     5: "開心"
 }"""
+    #return {"message": "success", "responses" : ["What about your good English?"]}
     email = data.email
     emotion = convert_emotion[data.emotion]
     translate_result = translate(data.text, "zh-tw")
