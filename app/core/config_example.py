@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 from starlette.datastructures import CommaSeparatedStrings, Secret
 from databases import DatabaseURL
 
-API_V1_STR = "/api/v1"
+API_V1_STR = "/v1"
+API_WEBCHAT_V1_STR = "/webchat"
+API_DEVELOPER_V1_STR = "/developer"
 
 #JWT_TOKEN_PREFIX = "Token"
 #ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # one week
@@ -16,6 +18,7 @@ MIN_CONNECTIONS_COUNT = int(os.getenv("MIN_CONNECTIONS_COUNT", 10))
 #SECRET_KEY = Secret(os.getenv("SECRET_KEY", "secret key for project"))
 
 PROJECT_NAME = os.getenv("PROJECT_NAME", "Accompany AI Chat")
+PROJECT_VERSION = os.getenv("PROJECT_VERSION", "0.1.1")
 ALLOWED_HOSTS = CommaSeparatedStrings(os.getenv("ALLOWED_HOSTS", "*"))
 
 API_PORT = 8080

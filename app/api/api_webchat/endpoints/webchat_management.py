@@ -12,7 +12,7 @@ from datetime import datetime
 async def get_avaliable_bot(user_email:str = "example@gmail.com"):
     db = await get_database()
     col = db[ONLINE_DATABASE_NAME][COLLECTION_Bots]
-    find_result = col.find({"$or":[{"is_public": True}, {"Creator": user_email}]},
+    find_result = col.find({"$or":[{"is_public": True}, {"creator": user_email}]},
                        {"_id": False,
                         "display_name": True,
                         "picture_url": True,
