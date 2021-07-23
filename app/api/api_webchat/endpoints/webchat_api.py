@@ -98,10 +98,10 @@ async def generate_response(data: generate_response_format):
             "email": email,
             "input": data.text,
             "emotion": data.emotion,
-            "translated_result": translate_result,
+            "translated_text": translate_result['translatedText'],
+            "detectedSourceLanguage": translate_result["detectedSourceLanguage"],
             "inputed_text": inputed_text,
             "model_predict": response["candidate"],
-            "detectedSourceLanguage": translate_result["detectedSourceLanguage"],
             "response": text,
             "bot": data.bots[i],
         })
