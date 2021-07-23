@@ -15,7 +15,8 @@ async def test():
 from pkg.translate import translate
 from pkg.text_process import transform, convert_emotion
 from aiohttp_requests import requests
-from core.config import CH_GENERATE_API_URL
+from core.config import CH_GENERATE_API_URLs
+import random
 
 
 
@@ -59,9 +60,25 @@ async def generate_response(data: generate_response_format):
         translate_result["detectedSourceLanguage"] = data.zh
 
     inputed_text = f"{translate_result['translatedText']}[{emotion}]"
-    result = await requests.get(f"{CH_GENERATE_API_URL}/?input_text={inputed_text}&nsamples={data.response_count}")
+    for i in range(10):
+        url = random.choice(CH_GENERATE_API_URLs)
+        try:
+            result = await requests.get(f"{url}/heartbeat", timeout=3)
+            #print(f"Work: {result} {url}/generate-text/")
+            break
+        except Exception as e:
+            import traceback
+            import sys
+            exc_type, exc_value, exc_tb = sys.exc_info()
+            result = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
+            #print(f"Not Working: {''} {url}")
+            continue
+        
+    
+    result = await requests.get(f"{url}/generate-text/?input_text={inputed_text}&nsamples={data.response_count}")
 
     responses = await result.json()
+    print(responses)
 
     out_responses = []
     for response in responses:
