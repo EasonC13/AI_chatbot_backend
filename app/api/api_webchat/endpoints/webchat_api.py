@@ -4,8 +4,8 @@ router = APIRouter()
 from pkg.aio_telegram_utils import aio_get_profile_img_b64
 from pkg.telegram_utils import get_bot_data_by_token, get_full_name_by_data
 from db.mongodb import get_database
-from core.config import DATABASE_NAME, COLLECTION_Bots
 
+from core.config import ONLINE_DATABASE_NAME, COLLECTION_chat_history
 
 @router.get("/test")
 async def test():
@@ -22,6 +22,7 @@ import random
 
 from pydantic import BaseModel, Field
 from typing import Optional
+from typing import Dict, List
 
 class generate_response_format(BaseModel):
     email: str = "example@gmail.com"
@@ -35,6 +36,7 @@ class generate_response_format(BaseModel):
     default_response: Optional[str] = ""
     zh: Optional[str] = "zh-tw"
     response_language: Optional[str] = ""
+    bots: List[Dict] = [{"display_name": None, "picture_url": None, "create_time": None}]
 
 from ...api_developer.endpoints.model_utils import deEmojify, remove_punct
 
@@ -78,14 +80,31 @@ async def generate_response(data: generate_response_format):
     result = await requests.get(f"{url}/generate-text/?input_text={inputed_text}&nsamples={data.response_count}")
 
     responses = await result.json()
-    print(responses)
+    #print(responses)
 
+    db = await get_database()
+    col = db[ONLINE_DATABASE_NAME][COLLECTION_chat_history]
+    
     out_responses = []
-    for response in responses:
+    for i in range(len(responses)):
+        response = responses[i]
         text = translate(response["candidate"], translate_result["detectedSourceLanguage"])
         text = text["translatedText"]
         text = transform(text)
         out_responses.append(text)
+
+        #Record to DB for further analyze
+        await col.insert_one({
+            "email": email,
+            "input": data.text,
+            "emotion": data.emotion,
+            "translated_result": translate_result,
+            "inputed_text": inputed_text,
+            "model_predict": response["candidate"],
+            "detectedSourceLanguage": translate_result["detectedSourceLanguage"],
+            "response": text,
+            "bot": data.bots[i],
+        })
     
     if data.emoji == False:
         out_responses = deEmojify(out_responses)
